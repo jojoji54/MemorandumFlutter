@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:flutter_animator/flutter_animator.dart';
-import 'package:flutter_animator/widgets/fading_entrances/fade_in.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:test1/data/memorandumList.dart';
 
 class BookDetail extends StatefulWidget {
+  // ignore: prefer_typing_uninitialized_variables
   var bookList;
-  BookDetail({key, this.bookList});
+  BookDetail({Key key, this.bookList}) : super(key: key);
 
   @override
   State<BookDetail> createState() => _BookDetailState();
@@ -72,8 +70,8 @@ class _BookDetailState extends State<BookDetail> {
                   onPress: () {
                     Navigator.pop(context);
                   },
-                  height: 70,
-                  width: 200,
+                  height:  MediaQuery.of(context).size.height * 0.06,
+                  width:  MediaQuery.of(context).size.width * 0.4,
                   text: 'Volver',
                   isReverse: true,
                   selectedTextColor: Colors.black,
