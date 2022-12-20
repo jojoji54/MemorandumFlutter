@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_shadow/simple_shadow.dart';
 import 'package:test1/apiDetails.dart';
-import 'package:http/http.dart' as http;
 import 'package:test1/services/remote_data.dart';
 
 import 'Model/memorandumData.dart';
@@ -59,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     setState(() {
-      apiDta = results;
+      dataListAux = results;
     });
   }
 
@@ -68,7 +67,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
     getApiData();
-    //dataListAux = apiDta;
   }
 
   getApiData() async {
@@ -89,10 +87,13 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Image.asset(
-                'assets/logo/Memorandu.png',
-                height: MediaQuery.of(context).size.height * 0.2,
-                width: MediaQuery.of(context).size.height * 0.3,
+              Align(
+                alignment: Alignment.topCenter,
+                child: Image.asset(
+                  'assets/logo/Memorandu.png',
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  width: MediaQuery.of(context).size.height * 0.3,
+                ),
               ),
               Padding(
                 padding: EdgeInsets.only(
@@ -124,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.width * 0.04,
+                height: isLoaded? MediaQuery.of(context).size.width * 0.04:MediaQuery.of(context).size.width * 0.1,
               ),
               Visibility(
                 visible: isLoaded,
@@ -241,7 +242,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         }),
                   ),
                 ),
-                replacement: Center(child: const CircularProgressIndicator()),
+                replacement: Center(child:  SizedBox(height: MediaQuery.of(context).size.width * 0.1, width: MediaQuery.of(context).size.width * 0.1, child: CircularProgressIndicator(color: Colors.orange,))),
               ),
             ],
           ),
