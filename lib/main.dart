@@ -125,7 +125,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               SizedBox(
-                height: isLoaded? MediaQuery.of(context).size.width * 0.04:MediaQuery.of(context).size.width * 0.1,
+                height: isLoaded
+                    ? MediaQuery.of(context).size.width * 0.04
+                    : MediaQuery.of(context).size.width * 0.1,
               ),
               Visibility(
                 visible: isLoaded,
@@ -242,7 +244,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         }),
                   ),
                 ),
-                replacement: Center(child:  SizedBox(height: MediaQuery.of(context).size.width * 0.1, width: MediaQuery.of(context).size.width * 0.1, child: CircularProgressIndicator(color: Colors.orange,))),
+                replacement: Center(
+                    child: SizedBox(
+                        height: MediaQuery.of(context).size.width * 0.1,
+                        width: MediaQuery.of(context).size.width * 0.1,
+                        child: CircularProgressIndicator(
+                          color: Colors.orange,
+                        ))),
               ),
             ],
           ),
