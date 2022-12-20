@@ -45,14 +45,12 @@ class _MyHomePageState extends State<MyHomePage> {
   void _runFilter(String enteredKeyword) {
     var results = [];
     if (enteredKeyword.isEmpty) {
-      // if the search field is empty or only contains white-space, we'll display all users
       results = memData;
     } else {
       results = memData
           .where((data) =>
               data.titulo.toLowerCase().contains(enteredKeyword.toLowerCase()))
           .toList();
-      // we use the toLowerCase() method to make it case-insensitive
     }
 
     setState(() {
