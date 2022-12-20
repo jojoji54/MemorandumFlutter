@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:simple_shadow/simple_shadow.dart';
 
 class BookDetail extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
@@ -25,14 +26,20 @@ class _BookDetailState extends State<BookDetail> {
                 height: MediaQuery.of(context).size.height * 0.05,
               ),
               Hero(
-                 tag:widget.bookList.titulo,
-                child: Image.asset(
-                  widget.bookList.imagenFlor,
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  width: MediaQuery.of(context).size.height * 0.3,
+                tag: widget.bookList.titulo,
+                child: SimpleShadow(
+                  opacity: 0.6, // Default: 0.5
+                  color: Colors.black, // Default: Black
+                  offset: Offset(5, 5), // Default: Offset(2, 2)
+                  sigma: 7, // Default: 2
+                  child: Image.asset(
+                    widget.bookList.imagenFlor,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    width: MediaQuery.of(context).size.height * 0.3,
+                  ),
                 ),
               ),
-                            SizedBox(
+              SizedBox(
                 height: MediaQuery.of(context).size.height * 0.02,
               ),
               FadeIn(
@@ -49,15 +56,17 @@ class _BookDetailState extends State<BookDetail> {
               ),
               FadeIn(
                 child: Padding(
-                  padding:  EdgeInsets.only(left:MediaQuery.of(context).size.height * 0.04, right: MediaQuery.of(context).size.height * 0.04),
+                  padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.height * 0.04,
+                      right: MediaQuery.of(context).size.height * 0.04),
                   child: SingleChildScrollView(
                     child: Text(
-                      
                       widget.bookList.descripcion,
-                      textAlign:  TextAlign.justify,
+                      textAlign: TextAlign.justify,
                       style: GoogleFonts.rubik(
-                          fontSize: MediaQuery.of(context).size.height * 0.02,
-                          color: Colors.grey,),
+                        fontSize: MediaQuery.of(context).size.height * 0.02,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                 ),
@@ -70,8 +79,8 @@ class _BookDetailState extends State<BookDetail> {
                   onPress: () {
                     Navigator.pop(context);
                   },
-                  height:  MediaQuery.of(context).size.height * 0.06,
-                  width:  MediaQuery.of(context).size.width * 0.4,
+                  height: MediaQuery.of(context).size.height * 0.06,
+                  width: MediaQuery.of(context).size.width * 0.4,
                   text: 'Volver',
                   isReverse: true,
                   selectedTextColor: Colors.black,
