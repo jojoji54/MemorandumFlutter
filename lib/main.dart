@@ -133,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   color: Colors.orange.withOpacity(0.5),
                                 ),
                                 borderRadius:
-                                    BorderRadius.circular(20.0), //<-- SEE HERE
+                                    BorderRadius.circular(20.0), 
                               ),
                               child: Padding(
                                 padding: EdgeInsets.all(
