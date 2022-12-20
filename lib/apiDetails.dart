@@ -6,8 +6,8 @@ import 'package:simple_shadow/simple_shadow.dart';
 
 class BookDetail extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
-  var bookList;
-  BookDetail({Key key, this.bookList}) : super(key: key);
+  var apiDataList;
+  BookDetail({Key key, this.apiDataList}) : super(key: key);
 
   @override
   State<BookDetail> createState() => _BookDetailState();
@@ -26,14 +26,14 @@ class _BookDetailState extends State<BookDetail> {
                 height: MediaQuery.of(context).size.height * 0.05,
               ),
               Hero(
-                tag: widget.bookList.titulo,
+                tag: widget.apiDataList.name,
                 child: SimpleShadow(
                   opacity: 0.6, // Default: 0.5
                   color: Colors.black, // Default: Black
                   offset: Offset(5, 5), // Default: Offset(2, 2)
                   sigma: 7, // Default: 2
-                  child: Image.asset(
-                    widget.bookList.imagenFlor,
+                  child: Image.network(
+                    widget.apiDataList.imageUrl,
                     height: MediaQuery.of(context).size.height * 0.3,
                     width: MediaQuery.of(context).size.height * 0.3,
                   ),
@@ -44,7 +44,7 @@ class _BookDetailState extends State<BookDetail> {
               ),
               FadeIn(
                 child: Text(
-                  widget.bookList.titulo,
+                  widget.apiDataList.name,
                   style: GoogleFonts.rubik(
                       fontSize: MediaQuery.of(context).size.height * 0.02,
                       color: Colors.black,
@@ -61,7 +61,7 @@ class _BookDetailState extends State<BookDetail> {
                       right: MediaQuery.of(context).size.height * 0.04),
                   child: SingleChildScrollView(
                     child: Text(
-                      widget.bookList.descripcion,
+                      widget.apiDataList.description,
                       textAlign: TextAlign.justify,
                       style: GoogleFonts.rubik(
                         fontSize: MediaQuery.of(context).size.height * 0.02,

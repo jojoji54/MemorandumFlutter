@@ -3,8 +3,11 @@ import 'package:flutter_animator/widgets/fading_entrances/fade_in.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_shadow/simple_shadow.dart';
-import 'package:test1/bookDetail.dart';
-import 'package:test1/data/memorandumList.dart';
+import 'package:test1/apiDetails.dart';
+import 'package:http/http.dart' as http;
+import 'package:test1/services/remote_data.dart';
+
+import 'Model/memorandumData.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,6 +40,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List<Data> apiDta;
+  var isLoaded = false;
   var dataListAux = [];
   static var savedData = [];
   static TextEditingController searchcontroller =
@@ -45,16 +50,16 @@ class _MyHomePageState extends State<MyHomePage> {
   void _runFilter(String enteredKeyword) {
     var results = [];
     if (enteredKeyword.isEmpty) {
-      results = memData;
+      results = apiDta;
     } else {
-      results = memData
+      results = apiDta
           .where((data) =>
-              data.titulo.toLowerCase().contains(enteredKeyword.toLowerCase()))
+              data.name.toLowerCase().contains(enteredKeyword.toLowerCase()))
           .toList();
     }
 
     setState(() {
-      dataListAux = results;
+      apiDta = results;
     });
   }
 
@@ -62,7 +67,18 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    dataListAux = memData;
+    getApiData();
+    //dataListAux = apiDta;
+  }
+
+  getApiData() async {
+    apiDta = await RemoteData().getData();
+    if (apiDta != null) {
+      dataListAux = apiDta;
+      setState(() {
+        isLoaded = true;
+      });
+    }
   }
 
   @override
@@ -110,109 +126,122 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(
                 height: MediaQuery.of(context).size.width * 0.04,
               ),
-              Expanded(
-                child: FadeIn(
-                  child: ListView.builder(
-                      itemCount: dataListAux.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final data = dataListAux[index];
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return BookDetail(bookList: data);
-                            }));
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                right: MediaQuery.of(context).size.height * 0.03,
-                                left: MediaQuery.of(context).size.height * 0.03),
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(
-                                  color: Colors.orange.withOpacity(0.5),
+              Visibility(
+                visible: isLoaded,
+                // ignore: sort_child_properties_last
+                child: Expanded(
+                  child: FadeIn(
+                    child: ListView.builder(
+                        itemCount: dataListAux?.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final data = dataListAux[index];
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return BookDetail(apiDataList: data);
+                              }));
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  right:
+                                      MediaQuery.of(context).size.height * 0.03,
+                                  left: MediaQuery.of(context).size.height *
+                                      0.03),
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                    color: Colors.orange.withOpacity(0.5),
+                                  ),
+                                  borderRadius: BorderRadius.circular(20.0),
                                 ),
-                                borderRadius:
-                                    BorderRadius.circular(20.0), 
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.all(
-                                    MediaQuery.of(context).size.height * 0.03),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment
-                                      .spaceBetween, //Center Row contents horizontally,
-                                  crossAxisAlignment: CrossAxisAlignment
-                                      .center, //Center Row contents vertically,
-                                  children: [
-                                    Hero(
-                                      tag: data.titulo,
-                                      child: SimpleShadow(
-                                        opacity: 0.6, // Default: 0.5
-                                        color: Colors.black, // Default: Black
-                                        offset:
-                                            Offset(5, 5), // Default: Offset(2, 2)
-                                        sigma: 7, // Default: 2
-                
-                                        child: Image.asset(
-                                          data.imagenFlor,
-                                          height:
-                                              MediaQuery.of(context).size.height *
-                                                  0.1,
-                                          width:
-                                              MediaQuery.of(context).size.height *
-                                                  0.1,
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: MediaQuery.of(context).size.height *
-                                          0.2,
-                                      height: MediaQuery.of(context).size.height *
-                                          0.1,
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .center, //Center Column contents vertically,
-                                        crossAxisAlignment: CrossAxisAlignment
-                                            .center, //Center Column contents horizontally,
-                                        children: [
-                                          Text(
-                                            data.titulo,
-                                            style: GoogleFonts.rubik(
-                                                fontSize: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.02,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          SizedBox(
+                                child: Padding(
+                                  padding: EdgeInsets.all(
+                                      MediaQuery.of(context).size.height *
+                                          0.03),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .spaceBetween, //Center Row contents horizontally,
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .center, //Center Row contents vertically,
+                                    children: [
+                                      Hero(
+                                        tag: data.name,
+                                        child: SimpleShadow(
+                                          opacity: 0.6, // Default: 0.5
+                                          color: Colors.black, // Default: Black
+                                          offset: Offset(
+                                              5, 5), // Default: Offset(2, 2)
+                                          sigma: 7, // Default: 2
+
+                                          child: Image.network(
+                                            data.imageUrl,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.1,
                                             width: MediaQuery.of(context)
                                                     .size
                                                     .height *
+                                                0.1,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.height *
                                                 0.2,
-                                            child: Text(
-                                              data.descripcion,
-                                              overflow: TextOverflow.ellipsis,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.1,
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .center, //Center Column contents vertically,
+                                          crossAxisAlignment: CrossAxisAlignment
+                                              .center, //Center Column contents horizontally,
+                                          children: [
+                                            Text(
+                                              data.name,
                                               style: GoogleFonts.rubik(
-                                                fontSize: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.015,
-                                                color: Colors.black,
+                                                  fontSize:
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.02,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.2,
+                                              child: Text(
+                                                data.description,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.rubik(
+                                                  fontSize:
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.015,
+                                                  color: Colors.black,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      }),
+                          );
+                        }),
+                  ),
                 ),
+                replacement: Center(child: const CircularProgressIndicator()),
               ),
             ],
           ),
