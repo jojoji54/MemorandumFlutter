@@ -118,10 +118,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         final data = dataListAux[index];
                         return GestureDetector(
                           onTap: () {
-                            Navigator.push(context, //OOJOOOO MUY IMPORTANTE
+                            Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
                               return BookDetail(bookList: data);
-                              //return PokDetail(pokemon: pokemon);
                             }));
                           },
                           child: Padding(
